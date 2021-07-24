@@ -2,18 +2,12 @@ package com.miraclemorning.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
-@Getter
-@Setter
-@ToString
-@Entity
+@Getter @Setter
+@Entity @Table(name="MEMBER")
 public class Member {
     @Id @GeneratedValue
     @Column(name = "member_id")
@@ -30,12 +24,17 @@ public class Member {
 
     private String avatar;
 
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private MemberRole role;
 
-    @Column(name = "reg_date")
-    private Date regDate;
+    @Column(name = "created_at")
+    private Date createdAt;
 
     @Column(name = "update_date")
-    private Date updateDate;
+    private Date updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="team_id")
+    private Team team;
 
 }

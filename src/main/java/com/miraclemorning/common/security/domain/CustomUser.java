@@ -22,7 +22,7 @@ public class CustomUser extends User {
 
     public CustomUser(Member member){
 
-        super(member.getUserId()+"", member.getUserPassword(), Collections.singletonList(new SimpleGrantedAuthority(member.getRole())));
+        super(member.getId()+"", member.getPassword(), Collections.singletonList(new SimpleGrantedAuthority(member.getRole().name())));
 
         this.member = member;
     }
