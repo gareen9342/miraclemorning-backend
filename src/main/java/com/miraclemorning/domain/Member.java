@@ -5,7 +5,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter @Setter
 @Entity @Table(name="MEMBER")
@@ -31,11 +33,13 @@ public class Member {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name = "update_date")
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="team_id")
     private Team team;
 
+    @OneToMany(mappedBy = "member")
+    private List<CalendarItem> calendarItems = new ArrayList<>();
 }

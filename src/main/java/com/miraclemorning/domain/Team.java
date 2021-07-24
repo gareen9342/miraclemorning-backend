@@ -21,9 +21,11 @@ public class Team {
     private List<Member> members = new ArrayList<>();
 
     @Column(name="team_name")
-    private String teamName;
+    private String name;
 
     @Column(name="team_desc")
-    private String teamDesc;
-    
+    private String desc;
+
+    @OneToOne(fetch = LAZY, mappedBy = "team")
+    private Calendar calendar;
 }
