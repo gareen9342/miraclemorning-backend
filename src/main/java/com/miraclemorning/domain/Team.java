@@ -25,6 +25,5 @@ public class Team {
 
     @Column(name="team_desc")
     private String teamDesc;
-
-
+    
 }
