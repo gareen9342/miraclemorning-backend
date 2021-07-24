@@ -16,17 +16,17 @@ import java.util.Date;
 @Entity
 public class Member {
     @Id @GeneratedValue
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "member_id")
+    private Long id;
 
-    @Column(name = "user_email")
-    private String userEmail;
+    @Column(name = "member_email")
+    private String email;
 
-    @Column(name = "user_password")
-    private String userPassword;
+    @Column(name = "member_password")
+    private String password;
 
-    @Column(name = "user_name")
-    private String userName;
+    @Column(name = "member_name")
+    private String name;
 
     private String avatar;
 
