@@ -15,6 +15,11 @@ public class MemberService {
     @Autowired
     private final MemberRepository memberRepository;
 
+    // ======== 회원가입 ========//
+    public void register(Member member) {
+        memberRepository.save(member);
+    }
+
     // ======== member의 id값으로 조회하기 =======//
     public Member findOne(Long id){
         return memberRepository.findOne(id);

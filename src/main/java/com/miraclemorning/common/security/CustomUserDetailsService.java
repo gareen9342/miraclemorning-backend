@@ -3,7 +3,7 @@ package com.miraclemorning.common.security;
 import com.miraclemorning.common.security.domain.CustomUser;
 import com.miraclemorning.domain.Member;
 import com.miraclemorning.repository.MemberRepository;
-import com.miraclemorning.service.MemberService;
+
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
