@@ -1,7 +1,6 @@
 # Miracle Morning - Back end 
 
 > 나의 미라클 모닝 프로젝트! (백엔드)
-
 Spring Boot + JPA 첫 도전기 🥸     
 
 
