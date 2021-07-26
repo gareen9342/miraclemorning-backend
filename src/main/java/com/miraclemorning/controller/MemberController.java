@@ -1,7 +1,6 @@
 package com.miraclemorning.controller;
 
 import com.miraclemorning.domain.Member;
-import com.miraclemorning.domain.MemberRole;
 import com.miraclemorning.service.MemberService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class MemberController {
     public ResponseEntity<Member> register(@RequestBody Member member){
         String password = member.getPassword();
         member.setPassword(passwordEncoder.encode(password));
-        member.setRole(MemberRole.USER);
+        memberService.register(member);
         return new ResponseEntity<>(member, HttpStatus.OK);
     }
 

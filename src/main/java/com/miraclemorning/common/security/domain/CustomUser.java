@@ -5,10 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import com.miraclemorning.domain.Member;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class CustomUser extends User {
@@ -21,13 +18,22 @@ public class CustomUser extends User {
     }
 
     public CustomUser(Member member){
-
-        super(member.getId()+"", member.getPassword(), Collections.singletonList(new SimpleGrantedAuthority(member.getRole().name())));
+        super(member.getEmail(), member.getPassword(), member.getAuthList().stream().map(auth -> new SimpleGrantedAuthority(auth.getAuth())).collect(Collectors.toList()));
 
         this.member = member;
     }
 
-    public Member getMember(){
-        return member;
+    public CustomUser(Member member, Collection<? extends GrantedAuthority> authorities) {
+        super(member.getEmail(), member.getPassword(), authorities);
+
+        this.member = member;
+    }
+
+    public Long getMemberId(){
+        return member.getId();
+    }
+
+    public String getMemberEmail(){
+        return member.getEmail();
     }
 }

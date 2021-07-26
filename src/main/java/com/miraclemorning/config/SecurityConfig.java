@@ -23,13 +23,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 
 
-// @EnableWebSecurity
+// @EnableWebSecurity -> 스프링 시큐리티 사용을 위한 어노테이션 선언
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
-    protected  void configure(HttpSecurity http) throws Exception{
+    protected void configure(HttpSecurity http) throws Exception{
         http.cors()
             .and()
             .csrf().disable()

@@ -2,6 +2,8 @@ package com.miraclemorning.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -27,13 +29,12 @@ public class Member {
 
     private String avatar;
 
-    @Enumerated(EnumType.STRING)
-    private MemberRole role;
-
     @Column(name = "created_at")
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -42,4 +43,16 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<CalendarItem> calendarItems = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "member_id")
+    private List<MemberAuth> authList = new ArrayList<MemberAuth>();
+
+    public void addAuth(MemberAuth auth){
+        authList.add(auth);
+    }
+
+    public void clearAuthList(){
+        authList.clear();
+    }
 }

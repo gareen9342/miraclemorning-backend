@@ -1,6 +1,7 @@
 package com.miraclemorning.service;
 
 import com.miraclemorning.domain.Member;
+import com.miraclemorning.domain.MemberAuth;
 import com.miraclemorning.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,22 @@ public class MemberService {
 
     // ======== 회원가입 ========//
     public void register(Member member) {
+
+        Member memberEntity = new Member();
+
+        memberEntity.setEmail(member.getEmail());
+        memberEntity.setPassword(member.getPassword());
+        memberEntity.setName(member.getName());
+        memberEntity.setAvatar("");
+
+        MemberAuth memberAuth = new MemberAuth();
+        memberAuth.setAuth("ROLE_MEMBER");
+
+        memberEntity.addAuth(memberAuth);
+
         memberRepository.save(member);
+
+        member.setId(memberEntity.getId());
     }
 
     // ======== member의 id값으로 조회하기 =======//
