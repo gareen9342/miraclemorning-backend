@@ -2,7 +2,8 @@ package com.miraclemorning.service;
 
 import com.miraclemorning.domain.Member;
 import com.miraclemorning.domain.MemberAuth;
-import com.miraclemorning.repository.MemberRepository;
+import com.miraclemorning.repository.MemberJpaRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     @Autowired
-    private final MemberRepository memberRepository;
+    private final MemberJpaRepository memberRepository;
 
     // ======== 회원가입 ========//
     public void register(Member member) {
@@ -33,21 +34,17 @@ public class MemberService {
 
         memberRepository.save(member);
 
-        member.setId(memberEntity.getId());
+//        member.setId(memberEntity.getId()); ->이런 짓은 하면 안된다
     }
 
     // ======== member의 id값으로 조회하기 =======//
     public Member findOne(Long id){
-        return memberRepository.findOne(id);
+        return memberRepository.findById(id).get();
     }
 
-    // ======= member의 email로 조회하기 =======//
-    public Member findByEmail(String email){
-        return memberRepository.findByEmail(email);
-    }
 
     //========= member의 email 로 멤버 있는 지, 없는 지 =========//
-    public int countByEmail(String email){
+    public Long countByEmail(String email){
         return memberRepository.countByEmail(email);
     }
 }

@@ -2,8 +2,12 @@ package com.miraclemorning.config;
 
 import com.miraclemorning.common.security.CustomAccessDeniedHandler;
 import com.miraclemorning.common.security.CustomUserDetailsService;
+import com.miraclemorning.common.security.RestAuthenticationEntryPoint;
 import com.miraclemorning.common.security.jwt.filter.JwtAuthenticationFilter;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,23 +26,35 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-
-// @EnableWebSecurity -> 스프링 시큐리티 사용을 위한 어노테이션 선언
+@Slf4j
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
-        http.cors()
-            .and()
-            .csrf().disable()
-            .exceptionHandling()
-            .accessDeniedHandler(createAccessDeniedHandler())
-            .and()
-            .addFilter(new JwtAuthenticationFilter(authenticationManager()))
-            .sessionManagement()
+        log.info("security config");
+
+        http.formLogin().disable()
+            .httpBasic().disable();
+
+        http.cors();
+
+        http.csrf().disable();
+
+        http.sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http.authorizeRequests()
+            .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+//            .requestMatchers(EndpointRequest.toAnyEndpoint()).hasAnyRole("ADMIN")
+            .antMatchers("/").permitAll()
+            .antMatchers("/users/**").access("permitAll")
+            .anyRequest().authenticated();
+
+        http.exceptionHandling()
+            .authenticationEntryPoint(new RestAuthenticationEntryPoint())
+            .accessDeniedHandler(createAccessDeniedHandler());
     }
 
     @Override
