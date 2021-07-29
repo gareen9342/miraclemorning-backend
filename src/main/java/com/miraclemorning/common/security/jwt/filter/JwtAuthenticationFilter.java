@@ -3,6 +3,7 @@ package com.miraclemorning.common.security.jwt.filter;
 import com.miraclemorning.common.security.domain.CustomUser;
 import com.miraclemorning.common.security.jwt.constants.SecurityConstants;
 
+import com.miraclemorning.common.security.jwt.provider.JwtTokenProvider;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -42,24 +43,23 @@ import java.util.stream.Collectors;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager){
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider){
         this.authenticationManager = authenticationManager;
-
         setFilterProcessesUrl(SecurityConstants.AUTH_LOGIN_URL);
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException{
+
+        // TODO : 다른 방법으로 갖고 올 수 있는 지 한번 알아보기, username 말고 다른 키 값으로 email 이라던지
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
         Authentication authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-
         return authenticationManager.authenticate(authenticationToken);
     }
 
-    /**
-     *
+    /*
      * 이 부분을 아예 다시 하자....
      */
     @Override
@@ -75,8 +75,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .setHeaderParam("typ", SecurityConstants.TOKEN_TYPE)
                 .setIssuer(SecurityConstants.TOKEN_ISSUER)
                 .setAudience(SecurityConstants.TOKEN_AUDIENCE)
-//                .setSubject(""+ user.get.getId())
-                .setExpiration(new Date(System.currentTimeMillis() + 864000000))
+                .setSubject(""+ user.getMemberId()) // 값을 넣는다
+                .setExpiration(new Date(System.currentTimeMillis() + 864000000)) // 시간 지정.
                 .claim("rol", roles)
                 .compact();
 
