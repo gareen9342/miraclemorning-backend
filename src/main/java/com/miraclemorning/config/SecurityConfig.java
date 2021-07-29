@@ -5,6 +5,7 @@ import com.miraclemorning.common.security.CustomUserDetailsService;
 import com.miraclemorning.common.security.RestAuthenticationEntryPoint;
 import com.miraclemorning.common.security.jwt.filter.JwtAuthenticationFilter;
 
+import com.miraclemorning.common.security.jwt.filter.JwtAuthorizationFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -26,9 +27,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
+/**
+ * spring security는 role 기반의 권한처리
+ *
+ *
+ */
 @Slf4j
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) //
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -42,15 +48,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable();
 
-        http.sessionManagement()
+        http
+            .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+            .addFilter(new JwtAuthorizationFilter(authenticationManager()))
+            .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
             .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-//            .requestMatchers(EndpointRequest.toAnyEndpoint()).hasAnyRole("ADMIN")
+            .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
             .antMatchers("/").permitAll()
-            .antMatchers("/users/**").access("permitAll")
-            .anyRequest().authenticated();
+            .antMatchers("/users/**").access("permitAll");
 
         http.exceptionHandling()
             .authenticationEntryPoint(new RestAuthenticationEntryPoint())

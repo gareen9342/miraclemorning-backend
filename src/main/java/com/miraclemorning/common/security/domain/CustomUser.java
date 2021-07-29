@@ -36,4 +36,8 @@ public class CustomUser extends User {
     public String getMemberEmail(){
         return member.getEmail();
     }
+
+    public Member getMember(){
+        return member;
+    }
 }

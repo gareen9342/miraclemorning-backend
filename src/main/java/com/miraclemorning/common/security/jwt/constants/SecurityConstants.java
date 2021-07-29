@@ -1,5 +1,6 @@
 package com.miraclemorning.common.security.jwt.constants;
 
+// 상수값 정의 클래스
 public class SecurityConstants {
 
     /** ====== 프론트에서 인증 요청하는 쪽은 이곳으로 ======
