@@ -3,6 +3,7 @@ package com.miraclemorning.controller;
 import com.miraclemorning.common.security.domain.CustomUser;
 import com.miraclemorning.domain.Member;
 import com.miraclemorning.service.MemberService;
+import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 @Log
 @RestController
+@NoArgsConstructor
 @RequestMapping("/users")
 public class MemberController {
     @Autowired
@@ -23,9 +25,6 @@ public class MemberController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    public MemberController() {
-    }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<Member> register(@RequestBody Member member){

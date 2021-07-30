@@ -2,7 +2,7 @@ package com.miraclemorning.service;
 
 import com.miraclemorning.domain.Member;
 import com.miraclemorning.domain.MemberAuth;
-import com.miraclemorning.repository.MemberJpaRepository;
+import com.miraclemorning.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     @Autowired
-    private final MemberJpaRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     // ======== 회원가입 ========//
     public void register(Member member) {
@@ -28,7 +28,7 @@ public class MemberService {
         memberEntity.setAvatar("");
 
         MemberAuth memberAuth = new MemberAuth();
-        memberAuth.setAuth("ROLE_MEMBER");
+        memberAuth.setAuth("USER");
 
         memberEntity.addAuth(memberAuth);
 

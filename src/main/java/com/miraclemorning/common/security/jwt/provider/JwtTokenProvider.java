@@ -109,7 +109,7 @@ public class JwtTokenProvider {
     }
 
     /**
-     * 왜 이놈들은 직접 쓰는 것도 아니고.. 그렇다고 공통 유틸로 빼지도 않은 것인가...
+     * 왜 이놈들은 직접 쓰는 것도 아니고.. 그렇다고 공통 유틸로 빼지도 않은 것인가... final은 왜 붙인걸까...
      */
     private boolean isEmpty(final CharSequence cs){ // charsequence는 뭐일까ㅠㅠ
         return cs == null || cs.length() == 0;

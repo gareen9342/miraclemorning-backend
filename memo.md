@@ -8,6 +8,18 @@ Entity의 상태 변화를 전파시키는 옵션
 Entity에 상태 변화가 있으면 연관되어 있는 Entity에도 상태 변화를 전이시키는 옵션   
 기본적으로는 아무 것도 전이시키지 않음
 
+## Validations
+: _validation annotations : request parameter의 입력값을 검증한다. spring mvc의 validation을 애터테이션을 이용해서 쉽게 관리가능_   
+
+- Size : max, min등으로 길이를 지정할 수 있
+- NotMull : 빈 값이 아닌지를 검사
+- NotBlank : 문자열이 null이 아니고 trim 한 길이가 0보다 크다는 것을 검사
+- Size : 글자 수나 컬렉션의 요소 개수 검사
+- Email : 이메일 주소 형식인지를 검사함
+- Past : 과거 날짜인지 검사
+
+
+
 ## 라이브러리
 
 : Jackson ObjectMapper   
@@ -56,3 +68,5 @@ public User getUser(@PathVariable("seq") logn seq){
     return userService.findOne(seq);
 }
 ```
+
+
