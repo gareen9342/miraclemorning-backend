@@ -56,4 +56,5 @@ Spring Boot + JPA 첫 도전기 🥸
 [메모링크](https://github.com/gareen9342/miraclemorning-backend/blob/master/memo.md)
 
 ### 생각 정리
-_일단 블로그에 매주 타임라인을 관리하며 적기_
+[생각정리 메모링크](https://github.com/gareen9342/miraclemorning-backend/blob/master/idea.md)   
+_+추가로 블로그에 매주 타임라인을 관리하며 적기_
