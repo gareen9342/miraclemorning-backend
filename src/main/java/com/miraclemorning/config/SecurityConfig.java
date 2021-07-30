@@ -5,7 +5,6 @@ import com.miraclemorning.common.security.CustomUserDetailsService;
 import com.miraclemorning.common.security.RestAuthenticationEntryPoint;
 import com.miraclemorning.common.security.jwt.filter.JwtAuthenticationFilter;
 
-import com.miraclemorning.common.security.jwt.filter.JwtAuthorizationFilter;
 import com.miraclemorning.common.security.jwt.filter.JwtRequestFilter;
 import com.miraclemorning.common.security.jwt.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;

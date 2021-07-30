@@ -51,11 +51,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException{
 
-        // TODO : 다른 방법으로 갖고 올 수 있는 지 한번 알아보기, username 말고 다른 키 값으로 email 이라던지
-        String username = request.getParameter("username");
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        Authentication authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+        Authentication authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
         return authenticationManager.authenticate(authenticationToken);
     }
 

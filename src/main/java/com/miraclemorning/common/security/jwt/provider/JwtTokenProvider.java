@@ -87,9 +87,9 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String jwtToken){
-        // TODO : replace deprecared functions
+
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(SecurityConstants.JWT_SECRET).parseClaimsJws(jwtToken);
+            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(SecurityConstants.JWT_SECRET).build().parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (ExpiredJwtException exception) {
             log.error("Token Expired");

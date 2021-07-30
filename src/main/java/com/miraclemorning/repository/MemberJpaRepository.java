@@ -10,4 +10,6 @@ public interface MemberJpaRepository extends JpaRepository<Member, Long> {
     Long countByEmail(String email);
 
     Member findByEmail(String useremail);
+
+    void deleteById(Long memberId);
 }

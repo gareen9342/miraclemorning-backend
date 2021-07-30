@@ -42,9 +42,13 @@ public class MemberService {
         return memberRepository.findById(id).get();
     }
 
-
     //========= member의 email 로 멤버 있는 지, 없는 지 =========//
     public Long countByEmail(String email){
         return memberRepository.countByEmail(email);
+    }
+
+    //========= 회원 탈퇴 =========//
+    public void remove(Long memberId) {
+        memberRepository.deleteById(memberId);
     }
 }
