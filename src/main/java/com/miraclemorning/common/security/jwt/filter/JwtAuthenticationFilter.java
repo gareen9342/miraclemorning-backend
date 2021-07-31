@@ -58,9 +58,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         return authenticationManager.authenticate(authenticationToken);
     }
 
-    /*
-     * 이 부분을 아예 다시 하자....
-     */
+
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, Authentication authentication){
         CustomUser user = ((CustomUser) authentication.getPrincipal());

@@ -32,6 +32,5 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
         String jsonString = objectMapper.writeValueAsString(apiErrorInfo);
         response.getWriter().write(jsonString);
 
-
     }
 }

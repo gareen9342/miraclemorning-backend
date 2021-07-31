@@ -22,7 +22,6 @@ public class SecurityConstants {
     public static final String TOKEN_AUDIENCE = "secure-app";
 
     // ====== end 인증 ========
-
     public static final String JWT_INVITE_SECRET = "(G+KbPdSgVkYp3s6v9y$B&E)H@McQfThWmZq4t7w!z%C*F-JaNdRgUkXn2r5u8x/";
 
 }

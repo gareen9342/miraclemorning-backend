@@ -3,10 +3,7 @@ package com.miraclemorning.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter @Setter
 @Entity
@@ -24,7 +21,19 @@ public class Invitation {
     @Column(name = "invitee_email")
     private String email;
 
-    private String token;
-
+    @Convert(converter = BooleanToYNConverter.class)
     private boolean used;
+}
+
+
+@Converter
+class BooleanToYNConverter implements AttributeConverter<Boolean, String> {
+
+    public String convertToDatabaseColumn(Boolean attribute) {
+        return (attribute != null && attribute) ? "Y" : "N";
+    }
+
+    public Boolean convertToEntityAttribute(String s) {
+        return "Y".equals(s);
+    }
 }
