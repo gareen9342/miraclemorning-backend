@@ -53,7 +53,7 @@ public class MemberController {
         return new ResponseEntity<Map>(resMap, HttpStatus.OK);
     }
 
-    @RequestMapping(value="")
+    @RequestMapping(value="", method=RequestMethod.GET)
     public ResponseEntity<Member> getMyinfo(@AuthenticationPrincipal CustomUser customUser) throws Exception{
         Long userId = customUser.getMemberId();
         log.info("user id = " + userId);
