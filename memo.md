@@ -18,8 +18,6 @@ Entity에 상태 변화가 있으면 연관되어 있는 Entity에도 상태 변
 - Email : 이메일 주소 형식인지를 검사함
 - Past : 과거 날짜인지 검사
 
-
-
 ## 라이브러리
 
 : Jackson ObjectMapper   
@@ -69,4 +67,39 @@ public User getUser(@PathVariable("seq") logn seq){
 }
 ```
 
+### CORS 관련
 
+내가 걷은 이슈 메세지 : "When allowCredentials is true, allowedOrigins cannot contain the special value "*" since that cannot be set on the "Access-Control-Allow-Origin" response header. To allow credentials to a set of origin"    
+allow credentials true 로 설정하면 allowedOrigin를 "*"로 설정할 수 없다고 한다.
+
+요청의 자격증명 모드 ( Request.credentials ) 가 include이면 Access-Control-Allow-Credentials 값이 true 일 경우에만 브라우저들은 응답을 노출한다.       
+-> 이렇게 했는데 왜 안될까 -> 는 에러메세지에 나와있다     
+-> 해당하는 자격증명들은 쿠키, authorization headers or TLS 클라이언트 인증서      
+-> TLS란 SSL Handshaking 의 업그레이드된 버전이라고 생각하면 될 듯?       
+
+
+https://heowc.dev/2018/03/13/spring-boot-cors/
+
+https://engineering.linecorp.com/ko/blog/best-practices-to-secure-your-ssl-tls/
+https://m.blog.naver.com/sung_mk1919/221598350824     //SSL handshaking, TLS에 대한 내용, 너무 어렵다 그래도 이게 자세함
+
+https://m.blog.naver.com/sung_mk1919/221467675499 // HTTPS 
+
+### credentialed Request
+
+인증된 요청을 사용하는 방법    
+브라우저의 비동기 리소스 요청 API인 XMLHttpRequest나 fetch API는 별도의 옵션 없이 브라우저의 쿠키 정보나 인증과 관련된 헤더를 함부로 요청에 담지 않는다    
+이떄 요청에 인증과 관련된 정보를 담을 수 있게 해주는 옵션이 바로 credentials 옵션      
+
+이 옵션에는 세 가지 값이 들어간다.    
+- same-origin : 같은 출처간 요청에만 인증정보를 담을 수 있다.     
+- include : 모든 요청에 인증정보를 담을 수 있다.    
+- omit : 모든 요청에 인증 정보를 담지 않는다.    
+
+**이 옵션들이 들어가면 브라우저는 리소스를 요청할 때 단순히 Access-Control-Allow-Origin 만 확인하는 것이 아니라 좀 더 빡빡한 검사 조건을 건다.**
+그리고 이 경우가 나의 에러 메세지의 원인... 
+
+-> 자격증명모드가 include일 경우?    
+
+1. Access-Control-Allow-Origin에는 *사용 불가, 명시적인 URL이어야 함.
+2. 응답 헤더에는 반드시 Access-Control-Allow-Credentials가 true 여야 함. 
