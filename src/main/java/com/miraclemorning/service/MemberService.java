@@ -1,7 +1,6 @@
 package com.miraclemorning.service;
 
 import com.miraclemorning.domain.Member;
-import com.miraclemorning.domain.MemberAuth;
 import com.miraclemorning.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;

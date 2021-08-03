@@ -1,4 +1,4 @@
-package com.miraclemorning.common.security.jwt.constants;
+package com.miraclemorning.common.security.constants;
 
 // 상수값 정의 클래스
 public class SecurityConstants {

@@ -1,17 +1,22 @@
 package com.miraclemorning.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter
 @Entity
+@Table( uniqueConstraints = {
+        @UniqueConstraint(columnNames = "email")
+})
 public class Member {
     @Id @GeneratedValue
     @Column(name = "member_id")
@@ -20,8 +25,18 @@ public class Member {
     @Column(name = "member_email")
     private String email;
 
+    @Column(nullable = false)
+    private boolean emailVerified = false;
+
+    @JsonIgnore
     @Column(name = "member_password")
     private String password;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
+
+    private String providerId;
 
     @Column(name = "member_name")
     private String name;
@@ -42,16 +57,4 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<CalendarItem> calendarItems = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "member_id")
-    private List<MemberAuth> authList = new ArrayList<MemberAuth>();
-
-    public void addAuth(MemberAuth auth){
-        authList.add(auth);
-    }
-
-    public void clearAuthList(){
-        authList.clear();
-    }
 }

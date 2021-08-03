@@ -1,6 +1,6 @@
 package com.miraclemorning.common.util;
 
-import com.miraclemorning.common.security.jwt.constants.SecurityConstants;
+import com.miraclemorning.common.security.constants.SecurityConstants;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
