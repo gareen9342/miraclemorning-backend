@@ -4,13 +4,14 @@ import com.miraclemorning.common.security.constants.SecurityConstants;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
 @Slf4j
-@Component
+@Service
 public class TokenProvider {
+
     public String createToken(Authentication authentication) {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 

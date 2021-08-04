@@ -9,6 +9,7 @@ import com.miraclemorning.exception.OAuth2AuthenticationProcessingException;
 import com.miraclemorning.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -28,15 +29,19 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException{
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
 
-        try{
+        try {
             return processOAuth2User(oAuth2UserRequest, oAuth2User);
-        }catch (Exception ex){
+        } catch (AuthenticationException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            // Throwing an instance of AuthenticationException will trigger the OAuth2AuthenticationFailureHandler
             throw new InternalAuthenticationServiceException(ex.getMessage(), ex.getCause());
         }
     }
 
     private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
+        
         if(StringUtils.hasLength(oAuth2UserInfo.getEmail())) { // isEmpty deprecated 되었길래 이걸로 바꿔봄 ...
             throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
         }

@@ -26,14 +26,8 @@ public class MemberService {
         memberEntity.setName(member.getName());
         memberEntity.setAvatar("");
 
-        MemberAuth memberAuth = new MemberAuth();
-        memberAuth.setAuth("USER");
-
-        memberEntity.addAuth(memberAuth);
 
         memberRepository.save(member);
-
-//        member.setId(memberEntity.getId()); ->이런 짓은 하면 안된다
     }
 
     // ======== member의 id값으로 조회하기 =======//
@@ -42,8 +36,8 @@ public class MemberService {
     }
 
     //========= member의 email 로 멤버 있는 지, 없는 지 =========//
-    public Long countByEmail(String email){
-        return memberRepository.countByEmail(email);
+    public Boolean existsByEmail(String email){
+        return memberRepository.existsByEmail(email);
     }
 
     //========= 회원 탈퇴 =========//

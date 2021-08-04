@@ -1,23 +1,19 @@
 package com.miraclemorning.common.security;
 
 import com.miraclemorning.domain.Member;
-import com.miraclemorning.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-@Service
+
 public class UserPrincipal implements OAuth2User,UserDetails {
 
     private Long id;

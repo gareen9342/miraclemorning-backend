@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "member_email")
+    @Email
     private String email;
 
     @Column(nullable = false)

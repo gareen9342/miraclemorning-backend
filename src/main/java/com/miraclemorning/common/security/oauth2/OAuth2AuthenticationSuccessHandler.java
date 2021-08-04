@@ -6,6 +6,7 @@ import com.miraclemorning.common.util.CookieUtil;
 import com.miraclemorning.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -22,11 +23,16 @@ import static com.miraclemorning.common.security.oauth2.HttpCookieOAuth2Authoriz
 
 @Log
 @Component
-@RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private TokenProvider tokenProvider;
 
     private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+
+    @Autowired
+    OAuth2AuthenticationSuccessHandler(TokenProvider tokenProvider,HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository){
+        this.tokenProvider = tokenProvider;
+        this.httpCookieOAuth2AuthorizationRequestRepository = httpCookieOAuth2AuthorizationRequestRepository;
+    }
 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, SecurityException {
         String targetUrl = determineTargetUrl(request, response, authentication);
