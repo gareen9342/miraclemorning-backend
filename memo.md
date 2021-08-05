@@ -103,3 +103,17 @@ https://m.blog.naver.com/sung_mk1919/221467675499 // HTTPS
 
 1. Access-Control-Allow-Origin에는 *사용 불가, 명시적인 URL이어야 함.
 2. 응답 헤더에는 반드시 Access-Control-Allow-Credentials가 true 여야 함. 
+
+
+### allowedOriginPatterns 
+-> allowedOrigins에 확장성있게 추가된 기능. -> allowedOrigin은 특정한 도메인만 받을 수 있다. -> cors스펙상 "*"가 허용되지 않음. 
+-> setAllowedOriginPatterns를 대신 사용하는 것이 권장되고 있다. 
+
+-> 와일드카드를 이용해서 좀 더 확장성 있는 도메인 패턴을 적용할 수 있도록 도와준다. 
+
+-> 이슈 설명 링크
+https://github.com/spring-projects/spring-framework/issues/26111#issuecomment-729805112
+
+-> 좀 더 자세한 설명
+https://github.com/spring-projects/spring-framework/commit/0e4e25d227dedd1a3ecddc4e40c263f190ca1c2b
+_위에서 부터 쭉 읽어보기. 166번째 줄의 setAllowedOriginPatterns를 적용할 것_ 

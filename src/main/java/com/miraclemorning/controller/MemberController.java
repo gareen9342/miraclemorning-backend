@@ -18,7 +18,7 @@ import java.util.Map;
 @Log
 @RestController
 @NoArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/users")
 public class MemberController {
 
     @Autowired
