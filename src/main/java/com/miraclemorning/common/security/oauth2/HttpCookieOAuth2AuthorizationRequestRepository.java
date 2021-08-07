@@ -10,13 +10,14 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//AuthorizationRequestRepository : 여기서 google 에서 제공한 요청,인가 관련한 정보를 저장하고, Authorizaion URL로 redirect -> 여기서 접근 허용여부 정
+//AuthorizationRequestRepository : 여기서 google 에서 제공한 요청, 인가 관련한 정보를 저장 및 처리한다.
 @Component
 public class HttpCookieOAuth2AuthorizationRequestRepository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
     public static final String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";
     public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";
     private static final int cookieExpireSeconds = 100;
 
+    // ========= 인가 요청 처리 / 쿠키 단에서
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
         return CookieUtil.getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
@@ -24,6 +25,7 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
                 .orElse(null);
     }
 
+    // ========= 인가 요청을 저장
     @Override
     public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest, HttpServletRequest request, HttpServletResponse response) {
 

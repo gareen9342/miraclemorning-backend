@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
-    private CustomOAuth2UserService customOAuth2UserService;
+    private CustomOAuth2UserService customOAuth2UserService; // register, loaduser와 같은 것들을 행함/
 
     @Autowired
     private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
@@ -75,6 +75,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationManagerBuilder.userDetailsService(customUserDetailsService)
                 .passwordEncoder(createPasswordEncoder());
     }
+
     @Bean
     public PasswordEncoder createPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -109,18 +110,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
 
         http.exceptionHandling()
-                .authenticationEntryPoint(new RestAuthenticationEntryPoint());
+                .authenticationEntryPoint(new RestAuthenticationEntryPoint()); // 인증되지 않은 사용자들에게 401에러 던지기
 
+        // 참고 문서 https://docs.spring.io/spring-security/site/docs/5.0.7.RELEASE/reference/html/oauth2login-advanced.html
         http.oauth2Login()
-                .authorizationEndpoint()
+                .authorizationEndpoint() // 클라리언트가 user-agent reedirection을 통해 ** 인가를 얻기 위해 ** 사용되어 진다.
                 .baseUri("/oauth2/authorize")
                 .authorizationRequestRepository(cookieAuthorizationRequestRepository())
                 .and()
-                .redirectionEndpoint()
+                .redirectionEndpoint() // Authorization Credentials를 가지는 응답을 리턴하기 위해 인가 서버로부터 사용되어 진다.
                 .baseUri("/oauth2/callback/*")
                 .and()
-                .userInfoEndpoint()
-                .userService(customOAuth2UserService)
+                .userInfoEndpoint()// client는  userinfo end point로 요청을 보내야한다. -> 인증된 유저의 claims(일반적으로 json에 해당하는)에 대해 보호된 리소스를 보내줌, (authentication을 통해 얻는 access token과 함께....)
+                .userService(customOAuth2UserService) // 설정된 인가 플로우로부터 유저의 값들을 얻는다.
                 .and()
                 .successHandler(oAuth2AuthenticationSuccessHandler)
                 .failureHandler(oAuth2AuthenticationFailureHandler);

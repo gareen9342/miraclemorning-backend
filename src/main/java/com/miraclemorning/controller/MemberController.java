@@ -28,24 +28,24 @@ public class MemberController {
     private PasswordEncoder passwordEncoder;
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<Member> register(@RequestBody Member member){
+    public ResponseEntity<Member> register(@RequestBody Member member) {
 
         memberService.register(member);
 
         return new ResponseEntity<>(member, HttpStatus.OK);
     }
 
-    @RequestMapping(value="/validate", method=RequestMethod.GET)
-    public ResponseEntity<Map> checkValidEmail(@RequestParam(name="email") String email){
+    @RequestMapping(value = "/validate", method = RequestMethod.GET)
+    public ResponseEntity<Map> checkValidEmail(@RequestParam(name = "email") String email) {
 
         Map resMap = new HashMap<>();
 
         Boolean existsByEmail = memberService.existsByEmail(email);
 
-        if(existsByEmail){
+        if (existsByEmail) {
             resMap.put("isExist", true);
-            resMap.put("message","이미 존재하는 유저 이메일입니다.");
-        }else{
+            resMap.put("message", "이미 존재하는 유저 이메일입니다.");
+        } else {
             resMap.put("isExist", false);
             resMap.put("message", "회원가입이 가능한 이메일입니다.");
         }
