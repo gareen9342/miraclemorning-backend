@@ -24,17 +24,6 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<Member> register(@RequestBody Member member) {
-
-        memberService.register(member);
-
-        return new ResponseEntity<>(member, HttpStatus.OK);
-    }
-
     @RequestMapping(value = "/validate", method = RequestMethod.GET)
     public ResponseEntity<Map> checkValidEmail(@RequestParam(name = "email") String email) {
 
