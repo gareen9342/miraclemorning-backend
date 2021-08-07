@@ -9,7 +9,7 @@ public class AuthResponse {
     private String tokenType = "Bearer";
 
     public AuthResponse(String accessToken) {
-        this.tokenType = accessToken;
+        this.accessToken = accessToken;
     }
 
 }

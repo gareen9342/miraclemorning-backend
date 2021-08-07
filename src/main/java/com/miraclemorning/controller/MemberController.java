@@ -1,19 +1,17 @@
 package com.miraclemorning.controller;
 
 
+import com.miraclemorning.common.security.CurrentUser;
+import com.miraclemorning.common.security.UserPrincipal;
 import com.miraclemorning.domain.Member;
-import com.miraclemorning.service.MemberService;
+import com.miraclemorning.exception.ResourceNotFoundException;
+import com.miraclemorning.repository.MemberRepository;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Log
 @RestController
@@ -22,22 +20,12 @@ import java.util.Map;
 public class MemberController {
 
     @Autowired
-    private MemberService memberService;
+    private MemberRepository memberRepository;
 
-    @RequestMapping(value = "/validate", method = RequestMethod.GET)
-    public ResponseEntity<Map> checkValidEmail(@RequestParam(name = "email") String email) {
-
-        Map resMap = new HashMap<>();
-
-        Boolean existsByEmail = memberService.existsByEmail(email);
-
-        if (existsByEmail) {
-            resMap.put("isExist", true);
-            resMap.put("message", "이미 존재하는 유저 이메일입니다.");
-        } else {
-            resMap.put("isExist", false);
-            resMap.put("message", "회원가입이 가능한 이메일입니다.");
-        }
-        return new ResponseEntity<Map>(resMap, HttpStatus.OK);
+    @GetMapping("/user/me")
+    @PreAuthorize("hasRole('USER')")
+    public Member getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
+        return memberRepository.findById(userPrincipal.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 }

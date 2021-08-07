@@ -2,8 +2,6 @@ package com.miraclemorning.common.util;
 
 import com.miraclemorning.common.security.constants.SecurityConstants;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -17,20 +15,18 @@ public class TokenUtil {
     public String createToken(String invitationId){
         byte[] signingKey = getSigningKey();
 
-        String token = Jwts.builder()
-            .signWith(Keys.hmacShaKeyFor(signingKey), SignatureAlgorithm.HS512)
-            .setHeaderParam("typ", SecurityConstants.TOKEN_TYPE)
+        return Jwts.builder()
+            .setSubject(invitationId)
+            .setIssuedAt(new Date())
             .setExpiration(new Date(System.currentTimeMillis() + 864000000))
-            .claim("invitationId", invitationId)
+            .signWith( SignatureAlgorithm.HS512, SecurityConstants.JWT_INVITE_SECRET)
             .compact();
-
-        return token;
     }
 
     public String getInfoFromToken(String jwtToken){
         try{
 
-            Jws<Claims> parsedToken = Jwts.parserBuilder().setSigningKey(SecurityConstants.JWT_INVITE_SECRET).build().parseClaimsJws(jwtToken);
+            Jws<Claims> parsedToken = Jwts.parser().setSigningKey(SecurityConstants.JWT_INVITE_SECRET).parseClaimsJws(jwtToken);
             Claims claims = parsedToken.getBody();
 
             return (String) claims.get("invitationId");
@@ -50,7 +46,7 @@ public class TokenUtil {
 
     public boolean validateToken(String jwtToken){
         try{
-            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(SecurityConstants.JWT_INVITE_SECRET).build().parseClaimsJws(jwtToken);
+            Jws<Claims> claims = Jwts.parser().setSigningKey(SecurityConstants.JWT_INVITE_SECRET).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (ExpiredJwtException exception){
             log.error("Token expired");

@@ -24,9 +24,9 @@ public class TokenProvider {
     }
 
     public Long getUserIdFromToken(String token){
-        Claims claims = Jwts.parserBuilder()
+        Claims claims = Jwts.parser()
                 .setSigningKey(SecurityConstants.JWT_SECRET)
-                .build().parseClaimsJws(token)
+                .parseClaimsJws(token)
                 .getBody();
 
         return Long.parseLong(claims.getSubject());
@@ -34,7 +34,7 @@ public class TokenProvider {
 
     public boolean validateToken (String authToken){
         try{
-            Jwts.parserBuilder().build().setSigningKey(SecurityConstants.JWT_SECRET).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(SecurityConstants.JWT_SECRET).parseClaimsJws(authToken);
         }catch (SignatureException ex) {
             log.error("Invalid JWT signature");
         } catch (MalformedJwtException ex) {
