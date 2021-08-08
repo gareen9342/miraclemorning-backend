@@ -1,10 +1,6 @@
 package com.miraclemorning.common.security;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.miraclemorning.common.exception.ApiErrorInfo;
+;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 

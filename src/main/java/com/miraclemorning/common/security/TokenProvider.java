@@ -1,6 +1,7 @@
 package com.miraclemorning.common.security;
 
 import com.miraclemorning.common.security.constants.SecurityConstants;
+import com.miraclemorning.config.AppProperties;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -12,30 +13,41 @@ import java.util.Date;
 @Service
 public class TokenProvider {
 
+    private AppProperties appProperties;
+
+    public TokenProvider (AppProperties appProperties){
+        this.appProperties = appProperties;
+    }
+
     public String createToken(Authentication authentication) {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + appProperties.getAuth().getTokenExpirationMsec());
 
         return Jwts.builder()
                 .setSubject(Long.toString(userPrincipal.getId()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 864000000))
-                .signWith( SignatureAlgorithm.HS512, SecurityConstants.JWT_SECRET)
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
                 .compact();
     }
 
-    public Long getUserIdFromToken(String token){
+    public Long getUserIdFromToken(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(SecurityConstants.JWT_SECRET)
+                .setSigningKey(appProperties.getAuth().getTokenSecret())
                 .parseClaimsJws(token)
                 .getBody();
 
         return Long.parseLong(claims.getSubject());
     }
 
-    public boolean validateToken (String authToken){
-        try{
-            Jwts.parser().setSigningKey(SecurityConstants.JWT_SECRET).parseClaimsJws(authToken);
-        }catch (SignatureException ex) {
+    public boolean validateToken(String authToken) {
+        log.info(authToken);
+        try {
+            Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
+            return true;
+        } catch (SignatureException ex) {
             log.error("Invalid JWT signature");
         } catch (MalformedJwtException ex) {
             log.error("Invalid JWT token");

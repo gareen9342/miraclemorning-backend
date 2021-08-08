@@ -106,8 +106,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
                 .antMatchers("/").permitAll()
-                .antMatchers("/auth/**", "/oauth2/**")
-                .permitAll();
+                .antMatchers("/auth/**", "/oauth2/**").permitAll()
+                .anyRequest()
+                .authenticated();
 
         http.exceptionHandling()
                 .authenticationEntryPoint(new RestAuthenticationEntryPoint()); // 인증되지 않은 사용자들에게 401에러 던지기

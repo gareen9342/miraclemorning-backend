@@ -6,7 +6,6 @@ import com.miraclemorning.common.security.UserPrincipal;
 import com.miraclemorning.domain.Member;
 import com.miraclemorning.exception.ResourceNotFoundException;
 import com.miraclemorning.repository.MemberRepository;
-import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,15 +14,13 @@ import org.springframework.web.bind.annotation.*;
 
 @Log
 @RestController
-@NoArgsConstructor
-@RequestMapping("/users")
 public class MemberController {
 
     @Autowired
     private MemberRepository memberRepository;
 
     @GetMapping("/user/me")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public Member getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
         return memberRepository.findById(userPrincipal.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
